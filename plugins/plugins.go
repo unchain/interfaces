@@ -5,7 +5,7 @@ import "github.com/unchainio/interfaces/logger"
 type Message struct {
 	Tag        uint64
 	Body       []byte
-	Attributes map[string]string
+	Attributes map[string]bool
 }
 
 type EndpointPlugin interface {
