@@ -19,5 +19,5 @@ type EndpointPlugin interface {
 
 type ActionPlugin interface {
 	Init(config []byte, log logger.Logger) (err error)
-	Handle(message *Message) (result *Message, err error)
+	Invoke(message *Message) (result *Message, err error)
 }
