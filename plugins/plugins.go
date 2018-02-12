@@ -5,28 +5,7 @@ import "github.com/unchainio/interfaces/logger"
 type Message struct {
 	Tag        uint64
 	Body       []byte
-	Attributes []interface{}
-}
-
-func (m *Message) AddAttribute(attr interface{}) {
-	if len(m.Attributes) > 0 {
-		for _, v := range m.Attributes {
-			if v == attr {
-				return
-			}
-		}
-		m.Attributes = append(m.Attributes, attr)
-	} else {
-		m.Attributes = append(m.Attributes, attr)
-	}
-}
-
-func (m *Message) RemoveAttribute(attr interface{}) {
-	for i, v := range m.Attributes {
-		if v == attr {
-			m.Attributes = append(m.Attributes[:i], m.Attributes[i+1:]...)
-		}
-	}
+	Attributes map[string]string
 }
 
 type EndpointPlugin interface {
