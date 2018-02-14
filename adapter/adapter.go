@@ -29,7 +29,7 @@ func NewMessage(body []byte) *Message {
 	}
 }
 
-var defaultOpts = &MessageOpts{}
+var defaultOpts = MessageOpts{}
 
 type MessageOptsFunc func(opt *MessageOpts)
 
@@ -38,7 +38,7 @@ func NewTaggedMessage(body []byte, optFuncs ...MessageOptsFunc) *TaggedMessage {
 	opts := defaultOpts
 
 	for _, optFunc := range optFuncs {
-		optFunc(opts)
+		optFunc(&opts)
 	}
 
 	if opts.tag == 0 {
