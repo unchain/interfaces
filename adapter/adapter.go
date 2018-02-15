@@ -62,9 +62,15 @@ func WithTag(tag uint64) MessageOptsFunc {
 }
 
 type Endpoint interface {
+	// Init: must NOT block, start long running processes in a go routine
 	Init(config []byte, log logger.Logger) (err error)
+
+	// Send: must block until sending is complete
 	Send(message *Message) (response *Message, err error)
+
+	// Receive: must block until a new message is received
 	Receive() (message *TaggedMessage, err error)
+
 	Ack(tag uint64, response *Message) error
 	Nack(tag uint64) error
 	Close() error
