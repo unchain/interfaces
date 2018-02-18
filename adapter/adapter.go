@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/unchainio/interfaces/logger"
+	"github.com/unchainio/pkg/xsync"
 )
 
 type TaggedMessage struct {
@@ -21,6 +22,8 @@ type Message struct {
 type MessageOpts struct {
 	tag uint64
 }
+
+var globalCounter xsync.Counter
 
 func NewMessage(body []byte) *Message {
 	return &Message{
@@ -42,7 +45,7 @@ func NewTaggedMessage(body []byte, optFuncs ...MessageOptsFunc) *TaggedMessage {
 	}
 
 	if opts.tag == 0 {
-		opts.tag = randomTag()
+		opts.tag = globalCounter.Add(1)
 	}
 
 	return &TaggedMessage{
