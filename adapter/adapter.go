@@ -74,7 +74,13 @@ type Endpoint interface {
 	// Receive: must block until a new message is received
 	Receive() (message *TaggedMessage, err error)
 
+	// Ack is called by the adapter base after the message (with tag `tag`), which was initially received 
+	// by this input endpoint, has been successfully passed through the actions in the pipeline, sent
+	// over the output endpoint, and a response has been returned from the output endpoint and passed
+	// through the actions in the response pipeline.
 	Ack(tag uint64, response *Message) error
+	
+	// Nack is called by the adapter base if anything goes wrong while processing the message with tag `tag`
 	Nack(tag uint64) error
 	Close() error
 }
