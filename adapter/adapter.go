@@ -2,12 +2,17 @@ package adapter
 
 import (
 	"math/rand"
-
 	"time"
 
 	"github.com/unchainio/interfaces/logger"
 	"github.com/unchainio/pkg/xsync"
 )
+
+var globalCounter xsync.Counter
+
+func init() {
+	rand.Seed(time.Now().UnixNano())
+}
 
 type TaggedMessage struct {
 	Tag uint64
@@ -22,8 +27,6 @@ type Message struct {
 type MessageOpts struct {
 	tag uint64
 }
-
-var globalCounter xsync.Counter
 
 func NewMessage(body []byte) *Message {
 	return &Message{
@@ -55,12 +58,18 @@ func NewTaggedMessage(body []byte, optFuncs ...MessageOptsFunc) *TaggedMessage {
 }
 
 func randomTag() uint64 {
-	return rand.New(rand.NewSource(time.Now().UnixNano())).Uint64()
+	return rand.Uint64()
 }
 
 func WithTag(tag uint64) MessageOptsFunc {
 	return func(opts *MessageOpts) {
 		opts.tag = tag
+	}
+}
+
+func WithRandomTag() MessageOptsFunc {
+	return func(opts *MessageOpts) {
+		opts.tag = randomTag()
 	}
 }
 
