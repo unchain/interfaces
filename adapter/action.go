@@ -6,7 +6,7 @@ import (
 
 func StartAction(action Action) {
 	plugin.Serve(&plugin.ServeConfig{
-		HandshakeConfig: Handshake,
+		HandshakeConfig: ActionHandshake,
 		Plugins: map[string]plugin.Plugin{
 			"action": &ActionPlugin{Impl: action},
 		},

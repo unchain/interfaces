@@ -23,172 +23,171 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 
-type InitRequest struct {
-	Config               []byte   `protobuf:"bytes,1,opt,name=config,proto3" json:"config,omitempty"`
-	LogServer            uint32   `protobuf:"varint,2,opt,name=log_server,json=logServer,proto3" json:"log_server,omitempty"`
+type InitActionRequest struct {
+	StubServer           uint32   `protobuf:"varint,1,opt,name=stub_server,json=stubServer,proto3" json:"stub_server,omitempty"`
+	Config               []byte   `protobuf:"bytes,2,opt,name=config,proto3" json:"config,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *InitRequest) Reset()         { *m = InitRequest{} }
-func (m *InitRequest) String() string { return proto.CompactTextString(m) }
-func (*InitRequest) ProtoMessage()    {}
-func (*InitRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_action_3422f6313897a898, []int{0}
+func (m *InitActionRequest) Reset()         { *m = InitActionRequest{} }
+func (m *InitActionRequest) String() string { return proto.CompactTextString(m) }
+func (*InitActionRequest) ProtoMessage()    {}
+func (*InitActionRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_action_34031451891ae1e7, []int{0}
 }
-func (m *InitRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_InitRequest.Unmarshal(m, b)
+func (m *InitActionRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_InitActionRequest.Unmarshal(m, b)
 }
-func (m *InitRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_InitRequest.Marshal(b, m, deterministic)
+func (m *InitActionRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_InitActionRequest.Marshal(b, m, deterministic)
 }
-func (dst *InitRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_InitRequest.Merge(dst, src)
+func (dst *InitActionRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_InitActionRequest.Merge(dst, src)
 }
-func (m *InitRequest) XXX_Size() int {
-	return xxx_messageInfo_InitRequest.Size(m)
+func (m *InitActionRequest) XXX_Size() int {
+	return xxx_messageInfo_InitActionRequest.Size(m)
 }
-func (m *InitRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_InitRequest.DiscardUnknown(m)
+func (m *InitActionRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_InitActionRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_InitRequest proto.InternalMessageInfo
+var xxx_messageInfo_InitActionRequest proto.InternalMessageInfo
 
-func (m *InitRequest) GetConfig() []byte {
+func (m *InitActionRequest) GetStubServer() uint32 {
+	if m != nil {
+		return m.StubServer
+	}
+	return 0
+}
+
+func (m *InitActionRequest) GetConfig() []byte {
 	if m != nil {
 		return m.Config
 	}
 	return nil
 }
 
-func (m *InitRequest) GetLogServer() uint32 {
-	if m != nil {
-		return m.LogServer
-	}
-	return 0
+type InitActionResponse struct {
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
-type InvokeMessage struct {
-	Body                 []byte          `protobuf:"bytes,1,opt,name=body,proto3" json:"body,omitempty"`
-	Attributes           map[string]bool `protobuf:"bytes,2,rep,name=attributes,proto3" json:"attributes,omitempty" protobuf_key:"bytes,1,opt,name=key,proto3" protobuf_val:"varint,2,opt,name=value,proto3"`
+func (m *InitActionResponse) Reset()         { *m = InitActionResponse{} }
+func (m *InitActionResponse) String() string { return proto.CompactTextString(m) }
+func (*InitActionResponse) ProtoMessage()    {}
+func (*InitActionResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_action_34031451891ae1e7, []int{1}
+}
+func (m *InitActionResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_InitActionResponse.Unmarshal(m, b)
+}
+func (m *InitActionResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_InitActionResponse.Marshal(b, m, deterministic)
+}
+func (dst *InitActionResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_InitActionResponse.Merge(dst, src)
+}
+func (m *InitActionResponse) XXX_Size() int {
+	return xxx_messageInfo_InitActionResponse.Size(m)
+}
+func (m *InitActionResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_InitActionResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_InitActionResponse proto.InternalMessageInfo
+
+type InvokeRequest struct {
+	StubServer           uint32          `protobuf:"varint,1,opt,name=stub_server,json=stubServer,proto3" json:"stub_server,omitempty"`
+	Message              *AdapterMessage `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
 	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
 	XXX_unrecognized     []byte          `json:"-"`
 	XXX_sizecache        int32           `json:"-"`
 }
 
-func (m *InvokeMessage) Reset()         { *m = InvokeMessage{} }
-func (m *InvokeMessage) String() string { return proto.CompactTextString(m) }
-func (*InvokeMessage) ProtoMessage()    {}
-func (*InvokeMessage) Descriptor() ([]byte, []int) {
-	return fileDescriptor_action_3422f6313897a898, []int{1}
+func (m *InvokeRequest) Reset()         { *m = InvokeRequest{} }
+func (m *InvokeRequest) String() string { return proto.CompactTextString(m) }
+func (*InvokeRequest) ProtoMessage()    {}
+func (*InvokeRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_action_34031451891ae1e7, []int{2}
 }
-func (m *InvokeMessage) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_InvokeMessage.Unmarshal(m, b)
+func (m *InvokeRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_InvokeRequest.Unmarshal(m, b)
 }
-func (m *InvokeMessage) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_InvokeMessage.Marshal(b, m, deterministic)
+func (m *InvokeRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_InvokeRequest.Marshal(b, m, deterministic)
 }
-func (dst *InvokeMessage) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_InvokeMessage.Merge(dst, src)
+func (dst *InvokeRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_InvokeRequest.Merge(dst, src)
 }
-func (m *InvokeMessage) XXX_Size() int {
-	return xxx_messageInfo_InvokeMessage.Size(m)
+func (m *InvokeRequest) XXX_Size() int {
+	return xxx_messageInfo_InvokeRequest.Size(m)
 }
-func (m *InvokeMessage) XXX_DiscardUnknown() {
-	xxx_messageInfo_InvokeMessage.DiscardUnknown(m)
+func (m *InvokeRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_InvokeRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_InvokeMessage proto.InternalMessageInfo
+var xxx_messageInfo_InvokeRequest proto.InternalMessageInfo
 
-func (m *InvokeMessage) GetBody() []byte {
+func (m *InvokeRequest) GetStubServer() uint32 {
 	if m != nil {
-		return m.Body
+		return m.StubServer
 	}
-	return nil
+	return 0
 }
 
-func (m *InvokeMessage) GetAttributes() map[string]bool {
-	if m != nil {
-		return m.Attributes
-	}
-	return nil
-}
-
-type Empty struct {
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *Empty) Reset()         { *m = Empty{} }
-func (m *Empty) String() string { return proto.CompactTextString(m) }
-func (*Empty) ProtoMessage()    {}
-func (*Empty) Descriptor() ([]byte, []int) {
-	return fileDescriptor_action_3422f6313897a898, []int{2}
-}
-func (m *Empty) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_Empty.Unmarshal(m, b)
-}
-func (m *Empty) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_Empty.Marshal(b, m, deterministic)
-}
-func (dst *Empty) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_Empty.Merge(dst, src)
-}
-func (m *Empty) XXX_Size() int {
-	return xxx_messageInfo_Empty.Size(m)
-}
-func (m *Empty) XXX_DiscardUnknown() {
-	xxx_messageInfo_Empty.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_Empty proto.InternalMessageInfo
-
-type LogRequest struct {
-	Message              string   `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *LogRequest) Reset()         { *m = LogRequest{} }
-func (m *LogRequest) String() string { return proto.CompactTextString(m) }
-func (*LogRequest) ProtoMessage()    {}
-func (*LogRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_action_3422f6313897a898, []int{3}
-}
-func (m *LogRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_LogRequest.Unmarshal(m, b)
-}
-func (m *LogRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_LogRequest.Marshal(b, m, deterministic)
-}
-func (dst *LogRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_LogRequest.Merge(dst, src)
-}
-func (m *LogRequest) XXX_Size() int {
-	return xxx_messageInfo_LogRequest.Size(m)
-}
-func (m *LogRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_LogRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_LogRequest proto.InternalMessageInfo
-
-func (m *LogRequest) GetMessage() string {
+func (m *InvokeRequest) GetMessage() *AdapterMessage {
 	if m != nil {
 		return m.Message
 	}
-	return ""
+	return nil
+}
+
+type InvokeResponse struct {
+	Message              *AdapterMessage `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
+	XXX_unrecognized     []byte          `json:"-"`
+	XXX_sizecache        int32           `json:"-"`
+}
+
+func (m *InvokeResponse) Reset()         { *m = InvokeResponse{} }
+func (m *InvokeResponse) String() string { return proto.CompactTextString(m) }
+func (*InvokeResponse) ProtoMessage()    {}
+func (*InvokeResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_action_34031451891ae1e7, []int{3}
+}
+func (m *InvokeResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_InvokeResponse.Unmarshal(m, b)
+}
+func (m *InvokeResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_InvokeResponse.Marshal(b, m, deterministic)
+}
+func (dst *InvokeResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_InvokeResponse.Merge(dst, src)
+}
+func (m *InvokeResponse) XXX_Size() int {
+	return xxx_messageInfo_InvokeResponse.Size(m)
+}
+func (m *InvokeResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_InvokeResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_InvokeResponse proto.InternalMessageInfo
+
+func (m *InvokeResponse) GetMessage() *AdapterMessage {
+	if m != nil {
+		return m.Message
+	}
+	return nil
 }
 
 func init() {
-	proto.RegisterType((*InitRequest)(nil), "proto.InitRequest")
-	proto.RegisterType((*InvokeMessage)(nil), "proto.InvokeMessage")
-	proto.RegisterMapType((map[string]bool)(nil), "proto.InvokeMessage.AttributesEntry")
-	proto.RegisterType((*Empty)(nil), "proto.Empty")
-	proto.RegisterType((*LogRequest)(nil), "proto.LogRequest")
+	proto.RegisterType((*InitActionRequest)(nil), "proto.InitActionRequest")
+	proto.RegisterType((*InitActionResponse)(nil), "proto.InitActionResponse")
+	proto.RegisterType((*InvokeRequest)(nil), "proto.InvokeRequest")
+	proto.RegisterType((*InvokeResponse)(nil), "proto.InvokeResponse")
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -203,8 +202,8 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type ActionClient interface {
-	Init(ctx context.Context, in *InitRequest, opts ...grpc.CallOption) (*Empty, error)
-	Invoke(ctx context.Context, in *InvokeMessage, opts ...grpc.CallOption) (*InvokeMessage, error)
+	Init(ctx context.Context, in *InitActionRequest, opts ...grpc.CallOption) (*InitActionResponse, error)
+	Invoke(ctx context.Context, in *InvokeRequest, opts ...grpc.CallOption) (*InvokeResponse, error)
 }
 
 type actionClient struct {
@@ -215,8 +214,8 @@ func NewActionClient(cc *grpc.ClientConn) ActionClient {
 	return &actionClient{cc}
 }
 
-func (c *actionClient) Init(ctx context.Context, in *InitRequest, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
+func (c *actionClient) Init(ctx context.Context, in *InitActionRequest, opts ...grpc.CallOption) (*InitActionResponse, error) {
+	out := new(InitActionResponse)
 	err := c.cc.Invoke(ctx, "/proto.Action/Init", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -224,8 +223,8 @@ func (c *actionClient) Init(ctx context.Context, in *InitRequest, opts ...grpc.C
 	return out, nil
 }
 
-func (c *actionClient) Invoke(ctx context.Context, in *InvokeMessage, opts ...grpc.CallOption) (*InvokeMessage, error) {
-	out := new(InvokeMessage)
+func (c *actionClient) Invoke(ctx context.Context, in *InvokeRequest, opts ...grpc.CallOption) (*InvokeResponse, error) {
+	out := new(InvokeResponse)
 	err := c.cc.Invoke(ctx, "/proto.Action/Invoke", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -235,8 +234,8 @@ func (c *actionClient) Invoke(ctx context.Context, in *InvokeMessage, opts ...gr
 
 // ActionServer is the server API for Action service.
 type ActionServer interface {
-	Init(context.Context, *InitRequest) (*Empty, error)
-	Invoke(context.Context, *InvokeMessage) (*InvokeMessage, error)
+	Init(context.Context, *InitActionRequest) (*InitActionResponse, error)
+	Invoke(context.Context, *InvokeRequest) (*InvokeResponse, error)
 }
 
 func RegisterActionServer(s *grpc.Server, srv ActionServer) {
@@ -244,7 +243,7 @@ func RegisterActionServer(s *grpc.Server, srv ActionServer) {
 }
 
 func _Action_Init_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(InitRequest)
+	in := new(InitActionRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -256,13 +255,13 @@ func _Action_Init_Handler(srv interface{}, ctx context.Context, dec func(interfa
 		FullMethod: "/proto.Action/Init",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ActionServer).Init(ctx, req.(*InitRequest))
+		return srv.(ActionServer).Init(ctx, req.(*InitActionRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _Action_Invoke_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(InvokeMessage)
+	in := new(InvokeRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -274,7 +273,7 @@ func _Action_Invoke_Handler(srv interface{}, ctx context.Context, dec func(inter
 		FullMethod: "/proto.Action/Invoke",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ActionServer).Invoke(ctx, req.(*InvokeMessage))
+		return srv.(ActionServer).Invoke(ctx, req.(*InvokeRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -296,259 +295,23 @@ var _Action_serviceDesc = grpc.ServiceDesc{
 	Metadata: "action.proto",
 }
 
-// LogHelperClient is the client API for LogHelper service.
-//
-// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type LogHelperClient interface {
-	Printf(ctx context.Context, in *LogRequest, opts ...grpc.CallOption) (*Empty, error)
-	Fatalf(ctx context.Context, in *LogRequest, opts ...grpc.CallOption) (*Empty, error)
-	Panicf(ctx context.Context, in *LogRequest, opts ...grpc.CallOption) (*Empty, error)
-	Debugf(ctx context.Context, in *LogRequest, opts ...grpc.CallOption) (*Empty, error)
-	Warnf(ctx context.Context, in *LogRequest, opts ...grpc.CallOption) (*Empty, error)
-	Errorf(ctx context.Context, in *LogRequest, opts ...grpc.CallOption) (*Empty, error)
-}
+func init() { proto.RegisterFile("action.proto", fileDescriptor_action_34031451891ae1e7) }
 
-type logHelperClient struct {
-	cc *grpc.ClientConn
-}
-
-func NewLogHelperClient(cc *grpc.ClientConn) LogHelperClient {
-	return &logHelperClient{cc}
-}
-
-func (c *logHelperClient) Printf(ctx context.Context, in *LogRequest, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
-	err := c.cc.Invoke(ctx, "/proto.LogHelper/Printf", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *logHelperClient) Fatalf(ctx context.Context, in *LogRequest, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
-	err := c.cc.Invoke(ctx, "/proto.LogHelper/Fatalf", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *logHelperClient) Panicf(ctx context.Context, in *LogRequest, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
-	err := c.cc.Invoke(ctx, "/proto.LogHelper/Panicf", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *logHelperClient) Debugf(ctx context.Context, in *LogRequest, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
-	err := c.cc.Invoke(ctx, "/proto.LogHelper/Debugf", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *logHelperClient) Warnf(ctx context.Context, in *LogRequest, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
-	err := c.cc.Invoke(ctx, "/proto.LogHelper/Warnf", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *logHelperClient) Errorf(ctx context.Context, in *LogRequest, opts ...grpc.CallOption) (*Empty, error) {
-	out := new(Empty)
-	err := c.cc.Invoke(ctx, "/proto.LogHelper/Errorf", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-// LogHelperServer is the server API for LogHelper service.
-type LogHelperServer interface {
-	Printf(context.Context, *LogRequest) (*Empty, error)
-	Fatalf(context.Context, *LogRequest) (*Empty, error)
-	Panicf(context.Context, *LogRequest) (*Empty, error)
-	Debugf(context.Context, *LogRequest) (*Empty, error)
-	Warnf(context.Context, *LogRequest) (*Empty, error)
-	Errorf(context.Context, *LogRequest) (*Empty, error)
-}
-
-func RegisterLogHelperServer(s *grpc.Server, srv LogHelperServer) {
-	s.RegisterService(&_LogHelper_serviceDesc, srv)
-}
-
-func _LogHelper_Printf_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(LogRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(LogHelperServer).Printf(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/proto.LogHelper/Printf",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LogHelperServer).Printf(ctx, req.(*LogRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _LogHelper_Fatalf_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(LogRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(LogHelperServer).Fatalf(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/proto.LogHelper/Fatalf",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LogHelperServer).Fatalf(ctx, req.(*LogRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _LogHelper_Panicf_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(LogRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(LogHelperServer).Panicf(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/proto.LogHelper/Panicf",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LogHelperServer).Panicf(ctx, req.(*LogRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _LogHelper_Debugf_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(LogRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(LogHelperServer).Debugf(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/proto.LogHelper/Debugf",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LogHelperServer).Debugf(ctx, req.(*LogRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _LogHelper_Warnf_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(LogRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(LogHelperServer).Warnf(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/proto.LogHelper/Warnf",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LogHelperServer).Warnf(ctx, req.(*LogRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _LogHelper_Errorf_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(LogRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(LogHelperServer).Errorf(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/proto.LogHelper/Errorf",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(LogHelperServer).Errorf(ctx, req.(*LogRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-var _LogHelper_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "proto.LogHelper",
-	HandlerType: (*LogHelperServer)(nil),
-	Methods: []grpc.MethodDesc{
-		{
-			MethodName: "Printf",
-			Handler:    _LogHelper_Printf_Handler,
-		},
-		{
-			MethodName: "Fatalf",
-			Handler:    _LogHelper_Fatalf_Handler,
-		},
-		{
-			MethodName: "Panicf",
-			Handler:    _LogHelper_Panicf_Handler,
-		},
-		{
-			MethodName: "Debugf",
-			Handler:    _LogHelper_Debugf_Handler,
-		},
-		{
-			MethodName: "Warnf",
-			Handler:    _LogHelper_Warnf_Handler,
-		},
-		{
-			MethodName: "Errorf",
-			Handler:    _LogHelper_Errorf_Handler,
-		},
-	},
-	Streams:  []grpc.StreamDesc{},
-	Metadata: "action.proto",
-}
-
-func init() { proto.RegisterFile("action.proto", fileDescriptor_action_3422f6313897a898) }
-
-var fileDescriptor_action_3422f6313897a898 = []byte{
-	// 343 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x8c, 0x50, 0xd1, 0x6a, 0xea, 0x40,
-	0x10, 0x25, 0xd1, 0xc4, 0xeb, 0xa8, 0xdc, 0x7b, 0x07, 0xb9, 0x04, 0xe1, 0x82, 0x84, 0x52, 0xe2,
-	0x8b, 0x0f, 0xb6, 0x0f, 0xa5, 0xd0, 0x07, 0x41, 0x4b, 0x05, 0x0b, 0x92, 0x3e, 0xf4, 0xb1, 0x6c,
-	0xec, 0xb8, 0x0d, 0xc6, 0x5d, 0xbb, 0xd9, 0x08, 0xfe, 0x43, 0x3f, 0xa4, 0x9f, 0x59, 0xdc, 0x44,
-	0xdb, 0x8a, 0xd0, 0x3c, 0xed, 0x9c, 0xd9, 0x33, 0x67, 0xce, 0x1c, 0x68, 0xb2, 0xb9, 0x8e, 0xa5,
-	0xe8, 0xaf, 0x95, 0xd4, 0x12, 0x1d, 0xf3, 0xf8, 0x23, 0x68, 0x4c, 0x44, 0xac, 0x43, 0x7a, 0xcd,
-	0x28, 0xd5, 0xf8, 0x0f, 0xdc, 0xb9, 0x14, 0x8b, 0x98, 0x7b, 0x56, 0xd7, 0x0a, 0x9a, 0x61, 0x81,
-	0xf0, 0x3f, 0x40, 0x22, 0xf9, 0x53, 0x4a, 0x6a, 0x43, 0xca, 0xb3, 0xbb, 0x56, 0xd0, 0x0a, 0xeb,
-	0x89, 0xe4, 0x0f, 0xa6, 0xe1, 0xbf, 0x5b, 0xd0, 0x9a, 0x88, 0x8d, 0x5c, 0xd2, 0x3d, 0xa5, 0x29,
-	0xe3, 0x84, 0x08, 0xd5, 0x48, 0x3e, 0x6f, 0x0b, 0x19, 0x53, 0xe3, 0x08, 0x80, 0x69, 0xad, 0xe2,
-	0x28, 0xd3, 0x94, 0x7a, 0x76, 0xb7, 0x12, 0x34, 0x06, 0x67, 0xb9, 0x9d, 0xfe, 0xb7, 0xe9, 0xfe,
-	0xf0, 0x40, 0x1b, 0x0b, 0xad, 0xb6, 0xe1, 0x97, 0xb9, 0xce, 0x0d, 0xfc, 0x3e, 0xfa, 0xc6, 0x3f,
-	0x50, 0x59, 0x52, 0xbe, 0xab, 0x1e, 0xee, 0x4a, 0x6c, 0x83, 0xb3, 0x61, 0x49, 0x46, 0xc6, 0xea,
-	0xaf, 0x30, 0x07, 0xd7, 0xf6, 0x95, 0xe5, 0xd7, 0xc0, 0x19, 0xaf, 0xd6, 0x7a, 0xeb, 0x9f, 0x03,
-	0x4c, 0x25, 0xdf, 0x1f, 0xee, 0x41, 0x6d, 0x95, 0x2f, 0x2f, 0x64, 0xf6, 0x70, 0xf0, 0x02, 0xee,
-	0xd0, 0x04, 0x87, 0x01, 0x54, 0x77, 0x59, 0x21, 0x1e, 0x3c, 0x1f, 0x82, 0xeb, 0x34, 0x8b, 0x9e,
-	0xd1, 0xc6, 0x4b, 0x70, 0xf3, 0x83, 0xb0, 0x7d, 0xea, 0xbe, 0xce, 0xc9, 0xee, 0xe0, 0xcd, 0x86,
-	0xfa, 0x54, 0xf2, 0x3b, 0x4a, 0xd6, 0xa4, 0xb0, 0x07, 0xee, 0x4c, 0xc5, 0x42, 0x2f, 0xf0, 0x6f,
-	0xc1, 0xfe, 0xb4, 0x7b, 0xb4, 0xae, 0x07, 0xee, 0x2d, 0xd3, 0x2c, 0x29, 0x47, 0x9d, 0x31, 0x11,
-	0xcf, 0xcb, 0x51, 0x47, 0x14, 0x65, 0xbc, 0x04, 0x35, 0x00, 0xe7, 0x91, 0x29, 0x51, 0x4e, 0x74,
-	0xac, 0x94, 0x54, 0x3f, 0x53, 0x23, 0xd7, 0x80, 0x8b, 0x8f, 0x00, 0x00, 0x00, 0xff, 0xff, 0x7d,
-	0xd6, 0x0c, 0xed, 0xb8, 0x02, 0x00, 0x00,
+var fileDescriptor_action_34031451891ae1e7 = []byte{
+	// 230 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x49, 0x4c, 0x2e, 0xc9,
+	0xcc, 0xcf, 0xd3, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0x05, 0x53, 0x52, 0xbc, 0xb9, 0xa9,
+	0xc5, 0xc5, 0x89, 0xe9, 0xa9, 0x10, 0x51, 0x25, 0x1f, 0x2e, 0x41, 0xcf, 0xbc, 0xcc, 0x12, 0x47,
+	0xb0, 0xca, 0xa0, 0xd4, 0xc2, 0xd2, 0xd4, 0xe2, 0x12, 0x21, 0x79, 0x2e, 0xee, 0xe2, 0x92, 0xd2,
+	0xa4, 0xf8, 0xe2, 0xd4, 0xa2, 0xb2, 0xd4, 0x22, 0x09, 0x46, 0x05, 0x46, 0x0d, 0xde, 0x20, 0x2e,
+	0x90, 0x50, 0x30, 0x58, 0x44, 0x48, 0x8c, 0x8b, 0x2d, 0x39, 0x3f, 0x2f, 0x2d, 0x33, 0x5d, 0x82,
+	0x49, 0x81, 0x51, 0x83, 0x27, 0x08, 0xca, 0x53, 0x12, 0xe1, 0x12, 0x42, 0x36, 0xad, 0xb8, 0x20,
+	0x3f, 0xaf, 0x38, 0x55, 0x29, 0x91, 0x8b, 0xd7, 0x33, 0xaf, 0x2c, 0x3f, 0x3b, 0x95, 0x68, 0xf3,
+	0xf5, 0xb9, 0xd8, 0xa1, 0xce, 0x04, 0x5b, 0xc0, 0x6d, 0x24, 0x0a, 0x71, 0xae, 0x9e, 0x63, 0x4a,
+	0x62, 0x41, 0x49, 0x6a, 0x91, 0x2f, 0x44, 0x32, 0x08, 0xa6, 0x4a, 0xc9, 0x91, 0x8b, 0x0f, 0x66,
+	0x05, 0xc4, 0x52, 0x64, 0x23, 0x18, 0x89, 0x31, 0xc2, 0xa8, 0x86, 0x8b, 0x0d, 0xe2, 0x6e, 0x21,
+	0x6b, 0x2e, 0x16, 0x90, 0x2f, 0x84, 0x24, 0xa0, 0x3a, 0x30, 0x02, 0x48, 0x4a, 0x12, 0x8b, 0x0c,
+	0xd4, 0x5e, 0x53, 0x2e, 0x36, 0x88, 0x4b, 0x84, 0x44, 0xe0, 0x8a, 0x90, 0xfc, 0x2e, 0x25, 0x8a,
+	0x26, 0x0a, 0xd1, 0x96, 0xc4, 0x06, 0x16, 0x35, 0x06, 0x04, 0x00, 0x00, 0xff, 0xff, 0x7b, 0x70,
+	0x0d, 0xda, 0xb4, 0x01, 0x00, 0x00,
 }

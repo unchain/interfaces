@@ -1,33 +1,27 @@
 syntax = "proto3";
+
+import "message.proto";
+
 package proto;
 
 
-message InitRequest {
-    bytes config = 1;
-    uint32 log_server = 2;
+message InitActionRequest {
+    uint32 stub_server = 1;
+    bytes config = 2;
 }
 
-message InvokeMessage {
-    bytes body = 1;
-    map<string, bool> attributes = 2;
+message InitActionResponse {}
+
+message InvokeRequest {
+    uint32 stub_server = 1;
+    AdapterMessage message = 2;
 }
 
-message Empty {}
-
-message LogRequest {
-    string message = 1;
+message InvokeResponse {
+    AdapterMessage message = 1;
 }
 
 service Action {
-    rpc Init(InitRequest) returns (Empty);
-    rpc Invoke(InvokeMessage) returns (InvokeMessage);
-}
-
-service LogHelper {
-    rpc Printf(LogRequest) returns (Empty);
-    rpc Fatalf(LogRequest) returns (Empty);
-    rpc Panicf(LogRequest) returns (Empty);
-    rpc Debugf(LogRequest) returns (Empty);
-    rpc Warnf(LogRequest)  returns (Empty);
-    rpc Errorf(LogRequest) returns (Empty);
+    rpc Init(InitActionRequest) returns (InitActionResponse);
+    rpc Invoke(InvokeRequest) returns (InvokeResponse);
 }

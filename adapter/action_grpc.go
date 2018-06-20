@@ -1,170 +1,90 @@
 package adapter
 
 import (
-	"fmt"
-
-	plugin "github.com/hashicorp/go-plugin"
+	"github.com/hashicorp/go-plugin"
 	"github.com/unchainio/interfaces/adapter/proto"
-	"github.com/unchainio/interfaces/logger"
 	"golang.org/x/net/context"
-	"google.golang.org/grpc"
 )
 
 // GRPCClient is an implementation of KV that talks over RPC.
-type GRPCClient struct {
+type GRPCActionClient struct {
 	broker *plugin.GRPCBroker
 	client proto.ActionClient
-	log    logger.Logger
 }
 
-func (m *GRPCClient) Init(cfg []byte, log logger.Logger) error {
-	logHelperServer := &GRPCLogServer{Impl: log}
+func (m *GRPCActionClient) Init(stub Stub, cfg []byte) error {
+	brokerID, closer := SetupStubServer(stub, m.broker)
+	defer closer()
 
-	var s *grpc.Server
-	serverFunc := func(opts []grpc.ServerOption) *grpc.Server {
-		s = grpc.NewServer(opts...)
-		proto.RegisterLogHelperServer(s, logHelperServer)
-
-		return s
-	}
-
-	brokerID := m.broker.NextId()
-	go m.broker.AcceptAndServe(brokerID, serverFunc)
-
-	_, err := m.client.Init(context.Background(), &proto.InitRequest{
-		LogServer: brokerID,
-		Config:    cfg,
+	_, err := m.client.Init(context.Background(), &proto.InitActionRequest{
+		StubServer: brokerID,
+		Config:     cfg,
 	})
 
-	s.Stop()
 	return err
 }
 
-func (m *GRPCClient) Invoke(message *Message) error {
-	imsg, err := m.client.Invoke(context.Background(), &proto.InvokeMessage{
-		Body:       message.Body,
-		Attributes: message.Attributes,
+func (m *GRPCActionClient) Invoke(stub Stub, message *Message) error {
+	brokerID, closer := SetupStubServer(stub, m.broker)
+	defer closer()
+
+	imsg, err := m.client.Invoke(context.Background(), &proto.InvokeRequest{
+		StubServer: brokerID,
+		Message: &proto.AdapterMessage{
+			Body:       message.Body,
+			Attributes: message.Attributes,
+		},
 	})
 
 	if err != nil {
 		return err
 	}
 
-	message.Body = imsg.Body
-	message.Attributes = imsg.Attributes
+	message.Body = imsg.Message.Body
+	message.Attributes = imsg.Message.Attributes
 
 	return nil
 }
 
 // Here is the gRPC server that GRPCClient talks to.
-type GRPCServer struct {
+type GRPCActionServer struct {
 	// This is the real implementation
 	Impl   Action
 	broker *plugin.GRPCBroker
 }
 
-func (m *GRPCServer) Init(ctx context.Context, req *proto.InitRequest) (*proto.Empty, error) {
-	conn, err := m.broker.Dial(req.LogServer)
+func (m *GRPCActionServer) Init(ctx context.Context, req *proto.InitActionRequest) (*proto.InitActionResponse, error) {
+	stub, closer, err := SetupStubClient(m.broker, req.StubServer)
+
 	if err != nil {
 		return nil, err
 	}
-	defer conn.Close()
 
-	log := &GRPCLogHelperClient{proto.NewLogHelperClient(conn)}
-	return &proto.Empty{}, m.Impl.Init(req.Config, log)
+	defer closer()
+
+	return &proto.InitActionResponse{}, m.Impl.Init(stub, req.Config)
 }
 
-func (m *GRPCServer) Invoke(ctx context.Context, req *proto.InvokeMessage) (*proto.InvokeMessage, error) {
-	msg := &Message{
-		Body:       req.Body,
-		Attributes: req.Attributes,
+func (m *GRPCActionServer) Invoke(ctx context.Context, req *proto.InvokeRequest) (*proto.InvokeResponse, error) {
+	stub, closer, err := SetupStubClient(m.broker, req.StubServer)
+
+	if err != nil {
+		return nil, err
 	}
 
-	err := m.Impl.Invoke(msg)
+	defer closer()
 
-	return &proto.InvokeMessage{
-		Body:       msg.Body,
-		Attributes: msg.Attributes,
+	msg := &Message{
+		Body:       req.Message.Body,
+		Attributes: req.Message.Attributes,
+	}
+
+	err = m.Impl.Invoke(stub, msg)
+
+	return &proto.InvokeResponse{
+		Message: &proto.AdapterMessage{
+			Body:       msg.Body,
+			Attributes: msg.Attributes,
+		},
 	}, err
-}
-
-// GRPCClient is an implementation of KV that talks over RPC.
-type GRPCLogHelperClient struct{ client proto.LogHelperClient }
-
-func (m *GRPCLogHelperClient) Debugf(format string, v ...interface{}) {
-	m.client.Debugf(context.Background(), &proto.LogRequest{
-		Message: fmt.Sprintf(format, v...),
-	})
-}
-
-func (m *GRPCLogHelperClient) Errorf(format string, v ...interface{}) {
-	m.client.Errorf(context.Background(), &proto.LogRequest{
-		Message: fmt.Sprintf(format, v...),
-	})
-}
-
-func (m *GRPCLogHelperClient) Fatalf(format string, v ...interface{}) {
-	m.client.Fatalf(context.Background(), &proto.LogRequest{
-		Message: fmt.Sprintf(format, v...),
-	})
-}
-
-func (m *GRPCLogHelperClient) Panicf(format string, v ...interface{}) {
-	m.client.Panicf(context.Background(), &proto.LogRequest{
-		Message: fmt.Sprintf(format, v...),
-	})
-}
-
-func (m *GRPCLogHelperClient) Printf(format string, v ...interface{}) {
-	m.client.Printf(context.Background(), &proto.LogRequest{
-		Message: fmt.Sprintf(format, v...),
-	})
-}
-
-func (m *GRPCLogHelperClient) Warnf(format string, v ...interface{}) {
-	m.client.Warnf(context.Background(), &proto.LogRequest{
-		Message: fmt.Sprintf(format, v...),
-	})
-}
-
-// Here is the gRPC server that GRPCClient talks to.
-type GRPCLogServer struct {
-	// This is the real implementation
-	Impl logger.Logger
-}
-
-func (m *GRPCLogServer) Printf(ctx context.Context, req *proto.LogRequest) (*proto.Empty, error) {
-	m.Impl.Printf("%s", req.Message)
-
-	return &proto.Empty{}, nil
-}
-
-func (m *GRPCLogServer) Fatalf(ctx context.Context, req *proto.LogRequest) (*proto.Empty, error) {
-	m.Impl.Fatalf("%s", req.Message)
-
-	return &proto.Empty{}, nil
-}
-
-func (m *GRPCLogServer) Panicf(ctx context.Context, req *proto.LogRequest) (*proto.Empty, error) {
-	m.Impl.Panicf("%s", req.Message)
-
-	return &proto.Empty{}, nil
-}
-
-func (m *GRPCLogServer) Debugf(ctx context.Context, req *proto.LogRequest) (*proto.Empty, error) {
-	m.Impl.Debugf("%s", req.Message)
-
-	return &proto.Empty{}, nil
-}
-
-func (m *GRPCLogServer) Warnf(ctx context.Context, req *proto.LogRequest) (*proto.Empty, error) {
-	m.Impl.Warnf("%s", req.Message)
-
-	return &proto.Empty{}, nil
-}
-
-func (m *GRPCLogServer) Errorf(ctx context.Context, req *proto.LogRequest) (*proto.Empty, error) {
-	m.Impl.Errorf("%s", req.Message)
-
-	return &proto.Empty{}, nil
 }

@@ -9,15 +9,15 @@ import (
 	"github.com/unchainio/interfaces/adapter/proto"
 )
 
-// Handshake is a common handshake that is shared by plugin and host.
-var Handshake = plugin.HandshakeConfig{
+// ActionHandshake is a common handshake that is shared by plugin and host.
+var ActionHandshake = plugin.HandshakeConfig{
 	ProtocolVersion:  2,
-	MagicCookieKey:   "BASIC_PLUGIN",
-	MagicCookieValue: "hello",
+	MagicCookieKey:   "ADAPTER_PLUGIN",
+	MagicCookieValue: "action",
 }
 
-// PluginMap is the map of plugins we can dispense.
-var PluginMap = map[string]plugin.Plugin{
+// ActionPluginMap is the map of plugins we can dispense.
+var ActionPluginMap = map[string]plugin.Plugin{
 	"action": &ActionPlugin{},
 }
 
@@ -32,7 +32,7 @@ type ActionPlugin struct {
 }
 
 func (p *ActionPlugin) GRPCServer(broker *plugin.GRPCBroker, s *grpc.Server) error {
-	proto.RegisterActionServer(s, &GRPCServer{
+	proto.RegisterActionServer(s, &GRPCActionServer{
 		Impl:   p.Impl,
 		broker: broker,
 	})
@@ -40,7 +40,7 @@ func (p *ActionPlugin) GRPCServer(broker *plugin.GRPCBroker, s *grpc.Server) err
 }
 
 func (p *ActionPlugin) GRPCClient(ctx context.Context, broker *plugin.GRPCBroker, c *grpc.ClientConn) (interface{}, error) {
-	return &GRPCClient{
+	return &GRPCActionClient{
 		client: proto.NewActionClient(c),
 		broker: broker,
 	}, nil
