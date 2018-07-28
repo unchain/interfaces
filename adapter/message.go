@@ -19,6 +19,7 @@ type TaggedMessage struct {
 }
 
 type Message struct {
+	ID         string
 	Body       []byte
 	Attributes map[string]bool
 }

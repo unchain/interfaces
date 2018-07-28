@@ -13,16 +13,14 @@ type GRPCActionClient struct {
 }
 
 func (m *GRPCActionClient) Init(stub Stub, cfg []byte) error {
-	brokerID, closer := SetupStubServer(stub, m.broker)
-	defer closer()
 
 	_, err := m.client.Init(context.Background(), &proto.InitActionRequest{
-		StubServer: brokerID,
 		Config:     cfg,
 	})
 
 	return err
 }
+
 
 func (m *GRPCActionClient) Invoke(stub Stub, message *Message) error {
 	brokerID, closer := SetupStubServer(stub, m.broker)
