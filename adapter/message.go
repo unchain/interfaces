@@ -13,15 +13,40 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
+type ITaggedMessage interface {
+	GetTag() uint64
+
+	GetID() string
+	GetBody() []byte
+}
+
+type IMessage interface {
+	GetID() string
+	GetBody() []byte
+}
+
+
 type TaggedMessage struct {
 	Tag uint64
 	*Message
 }
 
+func (tm *TaggedMessage) GetTag() uint64 {
+	return tm.Tag
+}
+
 type Message struct {
 	ID         string
-	Body       []byte
+	Body      []byte
 	Attributes map[string]bool
+}
+
+func (m *Message) GetID() string {
+	return m.ID
+}
+
+func (m *Message) GetBody() []byte {
+	return m.Body
 }
 
 type MessageOpts struct {

@@ -148,8 +148,8 @@ func (m *GRPCEndpointServer) Send(ctx context.Context, req *proto.SendRequest) (
 
 	return &proto.SendResponse{
 		Response: &proto.AdapterMessage{
-			Body:       r.Body,
-			Attributes: r.Attributes,
+			Body:       r.GetBody(),
+			//Attributes: r.GetAttributes(),
 		},
 	}, nil
 }
@@ -171,10 +171,10 @@ func (m *GRPCEndpointServer) Receive(ctx context.Context, req *proto.ReceiveRequ
 
 	return &proto.ReceiveResponse{
 		Message: &proto.TaggedAdapterMessage{
-			Tag: r.Tag,
+			Tag: r.GetTag(),
 			Message: &proto.AdapterMessage{
-				Body:       r.Body,
-				Attributes: r.Attributes,
+				Body:       r.GetBody(),
+				//Attributes: r.Attributes,
 			},
 		},
 	}, nil

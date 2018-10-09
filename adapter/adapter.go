@@ -7,7 +7,7 @@ type Endpoint interface {
 	Init(stub Stub, config []byte) (err error)
 
 	// Send: must block until sending is complete
-	Send(stub Stub, message *Message) (response *Message, err error)
+	Send(stub Stub, message IMessage) (response *Message, err error)
 
 	// Receive: must block until a new message is received
 	Receive(stub Stub) (message *TaggedMessage, err error)
@@ -16,7 +16,7 @@ type Endpoint interface {
 	// by this input endpoint, has been successfully passed through the actions in the pipeline, sent
 	// over the output endpoint, and a response has been returned from the output endpoint and passed
 	// through the actions in the response pipeline.
-	Ack(stub Stub, tag uint64, response *Message) error
+	Ack(stub Stub, tag uint64, response IMessage) error
 
 	// Nack is called by the adapter base if anything goes wrong while processing the message with tag `tag`
 	Nack(stub Stub, tag uint64, err error) error
@@ -26,7 +26,7 @@ type Endpoint interface {
 
 type Action interface {
 	Init(stub Stub, config []byte) (err error)
-	Invoke(stub Stub, message *Message) (err error)
+	Invoke(stub Stub, message IMessage) (err error)
 }
 
 type Stub interface {
