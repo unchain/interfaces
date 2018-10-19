@@ -16,7 +16,8 @@ type GRPCEndpointClient struct {
 
 func (m *GRPCEndpointClient) Init(stub Stub, cfg []byte) error {
 	brokerID, closer := SetupStubServer(stub, m.broker)
-	defer closer()
+	_ = closer
+	//defer closer()
 
 	_, err := m.client.Init(context.Background(), &proto.InitEndpointRequest{
 		StubServer: brokerID,
@@ -26,85 +27,48 @@ func (m *GRPCEndpointClient) Init(stub Stub, cfg []byte) error {
 	return err
 }
 
-func (m *GRPCEndpointClient) Send(stub Stub, message *Message) (*Message, error) {
-	brokerID, closer := SetupStubServer(stub, m.broker)
-	defer closer()
-
+func (m *GRPCEndpointClient) Send(message []byte) ([]byte, error) {
 	r, err := m.client.Send(context.Background(), &proto.SendRequest{
-		StubServer: brokerID,
-		Message: &proto.AdapterMessage{
-			Body:       message.Body,
-			Attributes: message.Attributes,
-		},
+		Message: message,
 	})
 
 	if err != nil {
 		return nil, err
 	}
 
-	return &Message{
-		Body:       r.Response.Body,
-		Attributes: r.Response.Attributes,
-	}, nil
+	return r.Response, nil
 }
 
-func (m *GRPCEndpointClient) Receive(stub Stub) (*TaggedMessage, error) {
-	brokerID, closer := SetupStubServer(stub, m.broker)
-	defer closer()
-
-	r, err := m.client.Receive(context.Background(), &proto.ReceiveRequest{
-		StubServer: brokerID,
-	})
+func (m *GRPCEndpointClient) Receive() (string, []byte, error) {
+	r, err := m.client.Receive(context.Background(), &proto.ReceiveRequest{})
 
 	if err != nil {
-		return nil, err
+		return "", nil, err
 	}
 
-	return &TaggedMessage{
-		Tag: r.Message.Tag,
-		Message: &Message{
-			Body:       r.Message.Message.Body,
-			Attributes: r.Message.Message.Attributes,
-		},
-	}, nil
+	return r.Tag, r.Message, nil
 }
 
-func (m *GRPCEndpointClient) Ack(stub Stub, tag uint64, response *Message) error {
-	brokerID, closer := SetupStubServer(stub, m.broker)
-	defer closer()
-
+func (m *GRPCEndpointClient) Ack(tag string, response []byte) error {
 	_, err := m.client.Ack(context.Background(), &proto.AckRequest{
-		StubServer: brokerID,
-		Tag:        tag,
-		Response: &proto.AdapterMessage{
-			Body:       response.Body,
-			Attributes: response.Attributes,
-		},
+		Tag:      tag,
+		Response: response,
 	})
 
 	return err
 }
 
-func (m *GRPCEndpointClient) Nack(stub Stub, tag uint64, responseError error) error {
-	brokerID, closer := SetupStubServer(stub, m.broker)
-	defer closer()
-
+func (m *GRPCEndpointClient) Nack(tag string, responseError error) error {
 	_, err := m.client.Nack(context.Background(), &proto.NackRequest{
-		StubServer: brokerID,
-		Tag:        tag,
-		Error:      responseError.Error(),
+		Tag:   tag,
+		Error: responseError.Error(),
 	})
 
 	return err
 }
 
-func (m *GRPCEndpointClient) Close(stub Stub) error {
-	brokerID, closer := SetupStubServer(stub, m.broker)
-	defer closer()
-
-	_, err := m.client.Close(context.Background(), &proto.CloseRequest{
-		StubServer: brokerID,
-	})
+func (m *GRPCEndpointClient) Close() error {
+	_, err := m.client.Close(context.Background(), &proto.CloseRequest{})
 
 	return err
 }
@@ -123,98 +87,45 @@ func (m *GRPCEndpointServer) Init(ctx context.Context, req *proto.InitEndpointRe
 		return nil, err
 	}
 
-	defer closer()
+	_ = closer
+	//defer closer()
 
 	return &proto.InitEndpointResponse{}, m.Impl.Init(stub, req.Config)
 }
 
 func (m *GRPCEndpointServer) Send(ctx context.Context, req *proto.SendRequest) (*proto.SendResponse, error) {
-	stub, closer, err := SetupStubClient(m.broker, req.StubServer)
-
-	if err != nil {
-		return nil, err
-	}
-
-	defer closer()
-
-	r, err := m.Impl.Send(stub, &Message{
-		Body:       req.Message.Body,
-		Attributes: req.Message.Attributes,
-	})
+	r, err := m.Impl.Send(req.Message)
 
 	if err != nil {
 		return nil, err
 	}
 
 	return &proto.SendResponse{
-		Response: &proto.AdapterMessage{
-			Body:       r.Body,
-			Attributes: r.Attributes,
-		},
+		Response: r,
 	}, nil
 }
 
 func (m *GRPCEndpointServer) Receive(ctx context.Context, req *proto.ReceiveRequest) (*proto.ReceiveResponse, error) {
-	stub, closer, err := SetupStubClient(m.broker, req.StubServer)
-
-	if err != nil {
-		return nil, err
-	}
-
-	defer closer()
-
-	r, err := m.Impl.Receive(stub)
+	tag, r, err := m.Impl.Receive()
 
 	if err != nil {
 		return nil, err
 	}
 
 	return &proto.ReceiveResponse{
-		Message: &proto.TaggedAdapterMessage{
-			Tag: r.Tag,
-			Message: &proto.AdapterMessage{
-				Body:       r.Body,
-				Attributes: r.Attributes,
-			},
-		},
+		Tag:     tag,
+		Message: r,
 	}, nil
 }
 
 func (m *GRPCEndpointServer) Ack(ctx context.Context, req *proto.AckRequest) (*proto.AckResponse, error) {
-	stub, closer, err := SetupStubClient(m.broker, req.StubServer)
-
-	if err != nil {
-		return nil, err
-	}
-
-	defer closer()
-
-	return &proto.AckResponse{}, m.Impl.Ack(stub, req.Tag, &Message{
-		Body:       req.Response.Body,
-		Attributes: req.Response.Attributes,
-	})
+	return &proto.AckResponse{}, m.Impl.Ack(req.Tag, req.Response)
 }
 
 func (m *GRPCEndpointServer) Nack(ctx context.Context, req *proto.NackRequest) (*proto.NackResponse, error) {
-	stub, closer, err := SetupStubClient(m.broker, req.StubServer)
-
-	if err != nil {
-		return nil, err
-	}
-
-	defer closer()
-
-	return &proto.NackResponse{}, m.Impl.Nack(stub, req.Tag, errors.New(req.Error))
+	return &proto.NackResponse{}, m.Impl.Nack(req.Tag, errors.New(req.Error))
 }
 
 func (m *GRPCEndpointServer) Close(ctx context.Context, req *proto.CloseRequest) (*proto.CloseResponse, error) {
-	stub, closer, err := SetupStubClient(m.broker, req.StubServer)
-
-	if err != nil {
-		return nil, err
-	}
-
-	defer closer()
-
-	return &proto.CloseResponse{}, m.Impl.Close(stub)
+	return &proto.CloseResponse{}, m.Impl.Close()
 }

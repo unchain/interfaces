@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-import "message.proto";
+//import "message.proto";
 
 package proto;
 
@@ -12,40 +12,36 @@ message InitEndpointRequest {
 message InitEndpointResponse {}
 
 message SendRequest {
-    uint32 stub_server = 1;
-    AdapterMessage message = 2;
+    bytes message = 1;
 }
 
 message SendResponse {
-    AdapterMessage response = 1;
+    bytes response = 1;
 }
 
 message ReceiveRequest {
-    uint32 stub_server = 1;
 }
 
 message ReceiveResponse {
-    TaggedAdapterMessage message = 1;
+    string tag = 1;
+    bytes message = 2;
 }
 
 message AckRequest {
-    uint32 stub_server = 1;
-    uint64 tag = 2;
-    AdapterMessage response = 3;
+    string tag = 1;
+    bytes response = 2;
 }
 
 message AckResponse {}
 
 message NackRequest {
-    uint32 stub_server = 1;
-    uint64 tag = 2;
-    string error = 3;
+    string tag = 1;
+    string error = 2;
 }
 
 message NackResponse {}
 
 message CloseRequest {
-    uint32 stub_server = 1;
 }
 
 message CloseResponse {}

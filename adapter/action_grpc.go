@@ -13,35 +13,29 @@ type GRPCActionClient struct {
 }
 
 func (m *GRPCActionClient) Init(stub Stub, cfg []byte) error {
+	brokerID, closer := SetupStubServer(stub, m.broker)
+
+	_ = closer
+	//defer closer()
 
 	_, err := m.client.Init(context.Background(), &proto.InitActionRequest{
+		StubServer: brokerID,
 		Config:     cfg,
 	})
 
 	return err
 }
 
-
-func (m *GRPCActionClient) Invoke(stub Stub, message *Message) error {
-	brokerID, closer := SetupStubServer(stub, m.broker)
-	defer closer()
-
-	imsg, err := m.client.Invoke(context.Background(), &proto.InvokeRequest{
-		StubServer: brokerID,
-		Message: &proto.AdapterMessage{
-			Body:       message.Body,
-			Attributes: message.Attributes,
-		},
+func (m *GRPCActionClient) Invoke(inputMessage []byte) (outputMessage []byte, err error) {
+	msg, err := m.client.Invoke(context.Background(), &proto.InvokeRequest{
+		Message: inputMessage,
 	})
 
 	if err != nil {
-		return err
+		return nil, err
 	}
 
-	message.Body = imsg.Message.Body
-	message.Attributes = imsg.Message.Attributes
-
-	return nil
+	return msg.Message, nil
 }
 
 // Here is the gRPC server that GRPCClient talks to.
@@ -58,31 +52,16 @@ func (m *GRPCActionServer) Init(ctx context.Context, req *proto.InitActionReques
 		return nil, err
 	}
 
-	defer closer()
+	_ = closer
+	//defer closer()
 
 	return &proto.InitActionResponse{}, m.Impl.Init(stub, req.Config)
 }
 
 func (m *GRPCActionServer) Invoke(ctx context.Context, req *proto.InvokeRequest) (*proto.InvokeResponse, error) {
-	stub, closer, err := SetupStubClient(m.broker, req.StubServer)
-
-	if err != nil {
-		return nil, err
-	}
-
-	defer closer()
-
-	msg := &Message{
-		Body:       req.Message.Body,
-		Attributes: req.Message.Attributes,
-	}
-
-	err = m.Impl.Invoke(stub, msg)
+	omsg, err := m.Impl.Invoke(req.Message)
 
 	return &proto.InvokeResponse{
-		Message: &proto.AdapterMessage{
-			Body:       msg.Body,
-			Attributes: msg.Attributes,
-		},
+		Message: omsg,
 	}, err
 }

@@ -1,8 +1,11 @@
 package adapter
 
 import (
+	"fmt"
 	"math/rand"
 	"time"
+
+	"github.com/gofrs/uuid"
 
 	"github.com/unchainio/pkg/xsync"
 )
@@ -13,57 +16,42 @@ func init() {
 	rand.Seed(time.Now().UnixNano())
 }
 
-type TaggedMessage struct {
-	Tag uint64
-	*Message
-}
-
-type Message struct {
-	ID         string
-	Body       []byte
-	Attributes map[string]bool
-}
-
-type MessageOpts struct {
-	tag uint64
-}
-
-func NewMessage(body []byte) *Message {
-	return &Message{
-		Body:       body,
-		Attributes: make(map[string]bool),
-	}
-}
-
-var defaultOpts = MessageOpts{}
-
-type MessageOptsFunc func(opt *MessageOpts)
-
-// NewMessage constructs a new message with a random tag unless a custom one is specified via WithTag(tag uint64)
-func NewTaggedMessage(body []byte, optFuncs ...MessageOptsFunc) *TaggedMessage {
+func NewTag(optFuncs ...MessageOptsFunc) string {
 	opts := defaultOpts
 
 	for _, optFunc := range optFuncs {
 		optFunc(&opts)
 	}
 
-	if opts.tag == 0 {
-		opts.tag = globalCounter.Add(1)
+	if opts.tag == "" {
+		opts.tag = fmt.Sprintf("%d", globalCounter.Add(1))
 	}
 
-	return &TaggedMessage{
-		Tag:     opts.tag,
-		Message: NewMessage(body),
-	}
+	return opts.tag
 }
 
-func randomTag() uint64 {
-	return rand.Uint64()
+type MessageOpts struct {
+	tag string
 }
 
-func WithTag(tag uint64) MessageOptsFunc {
+var defaultOpts = MessageOpts{}
+
+type MessageOptsFunc func(opt *MessageOpts)
+
+func randomTag() string {
+	return fmt.Sprintf("%d", rand.Uint64())
+}
+
+func WithTag(tag string) MessageOptsFunc {
 	return func(opts *MessageOpts) {
 		opts.tag = tag
+	}
+}
+func WithUUID() MessageOptsFunc {
+	return func(opts *MessageOpts) {
+		tag, _ := uuid.NewV4()
+
+		opts.tag = tag.String()
 	}
 }
 
