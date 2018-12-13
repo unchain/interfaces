@@ -2,11 +2,11 @@ package adapter
 
 import "github.com/hashicorp/go-plugin"
 
-func StartEndpoint(endpoint Endpoint) {
+func StartTrigger(trigger Trigger) {
 	plugin.Serve(&plugin.ServeConfig{
-		HandshakeConfig: EndpointHandshake,
+		HandshakeConfig: TriggerHandshake,
 		Plugins: map[string]plugin.Plugin{
-			"endpoint": &EndpointPlugin{Impl: endpoint},
+			"trigger": &TriggerPlugin{Impl: trigger},
 		},
 
 		// A non-nil value here enables gRPC serving for this plugin...

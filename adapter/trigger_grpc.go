@@ -10,17 +10,17 @@ import (
 )
 
 // GRPCClient is an implementation of KV that talks over RPC.
-type GRPCEndpointClient struct {
+type GRPCTriggerClient struct {
 	broker *plugin.GRPCBroker
-	client proto.EndpointClient
+	client proto.TriggerClient
 }
 
-func (m *GRPCEndpointClient) Init(stub Stub, cfg []byte) error {
+func (m *GRPCTriggerClient) Init(stub Stub, cfg []byte) error {
 	brokerID, closer := SetupStubServer(stub, m.broker)
 	_ = closer
 	//defer closer()
 
-	_, err := m.client.Init(context.Background(), &proto.InitEndpointRequest{
+	_, err := m.client.Init(context.Background(), &proto.InitTriggerRequest{
 		StubServer: brokerID,
 		Config:     cfg,
 	})
@@ -28,8 +28,8 @@ func (m *GRPCEndpointClient) Init(stub Stub, cfg []byte) error {
 	return err
 }
 
-func (m *GRPCEndpointClient) Receive() (string, []byte, error) {
-	r, err := m.client.Receive(context.Background(), &proto.ReceiveRequest{})
+func (m *GRPCTriggerClient) Trigger() (string, []byte, error) {
+	r, err := m.client.Trigger(context.Background(), &proto.TriggerRequest{})
 
 	if err != nil {
 		return "", nil, err
@@ -38,7 +38,7 @@ func (m *GRPCEndpointClient) Receive() (string, []byte, error) {
 	return r.Tag, r.Message, nil
 }
 
-func (m *GRPCEndpointClient) Ack(tag string, response []byte) error {
+func (m *GRPCTriggerClient) Ack(tag string, response []byte) error {
 	_, err := m.client.Ack(context.Background(), &proto.AckRequest{
 		Tag:      tag,
 		Response: response,
@@ -47,7 +47,7 @@ func (m *GRPCEndpointClient) Ack(tag string, response []byte) error {
 	return err
 }
 
-func (m *GRPCEndpointClient) Nack(tag string, responseError error) error {
+func (m *GRPCTriggerClient) Nack(tag string, responseError error) error {
 	_, err := m.client.Nack(context.Background(), &proto.NackRequest{
 		Tag:   tag,
 		Error: responseError.Error(),
@@ -56,20 +56,20 @@ func (m *GRPCEndpointClient) Nack(tag string, responseError error) error {
 	return err
 }
 
-func (m *GRPCEndpointClient) Close() error {
+func (m *GRPCTriggerClient) Close() error {
 	_, err := m.client.Close(context.Background(), &proto.CloseRequest{})
 
 	return err
 }
 
 // Here is the gRPC server that GRPCClient talks to.
-type GRPCEndpointServer struct {
+type GRPCTriggerServer struct {
 	// This is the real implementation
-	Impl   Endpoint
+	Impl   Trigger
 	broker *plugin.GRPCBroker
 }
 
-func (m *GRPCEndpointServer) Init(ctx context.Context, req *proto.InitEndpointRequest) (*proto.InitEndpointResponse, error) {
+func (m *GRPCTriggerServer) Init(ctx context.Context, req *proto.InitTriggerRequest) (*proto.InitTriggerResponse, error) {
 	stub, closer, err := SetupStubClient(m.broker, req.StubServer)
 
 	if err != nil {
@@ -79,11 +79,11 @@ func (m *GRPCEndpointServer) Init(ctx context.Context, req *proto.InitEndpointRe
 	_ = closer
 	//defer closer()
 
-	return &proto.InitEndpointResponse{}, m.Impl.Init(stub, req.Config)
+	return &proto.InitTriggerResponse{}, m.Impl.Init(stub, req.Config)
 }
 
-func (m *GRPCEndpointServer) Receive(ctx context.Context, req *proto.ReceiveRequest) (*proto.ReceiveResponse, error) {
-	tag, r, err := m.Impl.Receive()
+func (m *GRPCTriggerServer) Trigger(ctx context.Context, req *proto.TriggerRequest) (*proto.TriggerResponse, error) {
+	tag, r, err := m.Impl.Trigger()
 
 	if err != nil {
 		return nil, err
@@ -95,13 +95,13 @@ func (m *GRPCEndpointServer) Receive(ctx context.Context, req *proto.ReceiveRequ
 		return nil, err
 	}
 
-	return &proto.ReceiveResponse{
+	return &proto.TriggerResponse{
 		Tag:     tag,
 		Message: rBytes,
 	}, nil
 }
 
-func (m *GRPCEndpointServer) Ack(ctx context.Context, req *proto.AckRequest) (*proto.AckResponse, error) {
+func (m *GRPCTriggerServer) Ack(ctx context.Context, req *proto.AckRequest) (*proto.AckResponse, error) {
 	response := make(map[string]map[string]interface{})
 	err := json.Unmarshal(req.Response, response)
 
@@ -114,10 +114,10 @@ func (m *GRPCEndpointServer) Ack(ctx context.Context, req *proto.AckRequest) (*p
 	return &proto.AckResponse{}, m.Impl.Ack(req.Tag, response)
 }
 
-func (m *GRPCEndpointServer) Nack(ctx context.Context, req *proto.NackRequest) (*proto.NackResponse, error) {
+func (m *GRPCTriggerServer) Nack(ctx context.Context, req *proto.NackRequest) (*proto.NackResponse, error) {
 	return &proto.NackResponse{}, m.Impl.Nack(req.Tag, errors.New(req.Error))
 }
 
-func (m *GRPCEndpointServer) Close(ctx context.Context, req *proto.CloseRequest) (*proto.CloseResponse, error) {
+func (m *GRPCTriggerServer) Close(ctx context.Context, req *proto.CloseRequest) (*proto.CloseResponse, error) {
 	return &proto.CloseResponse{}, m.Impl.Close()
 }

@@ -13,12 +13,12 @@ import (
 var ActionHandshake = plugin.HandshakeConfig{
 	ProtocolVersion:  2,
 	MagicCookieKey:   "ADAPTER_PLUGIN",
-	MagicCookieValue: "action",
+	MagicCookieValue: ActionComponent,
 }
 
 // ActionPluginMap is the map of plugins we can dispense.
 var ActionPluginMap = map[string]plugin.Plugin{
-	"action": &ActionPlugin{},
+	ActionComponent: &ActionPlugin{},
 }
 
 // This is the implementation of plugin.Plugin so we can serve/consume this.

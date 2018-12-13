@@ -2,12 +2,19 @@ package adapter
 
 import "github.com/unchainio/interfaces/logger"
 
-type Endpoint interface {
+type ComponentType string
+
+const (
+	TriggerComponent = "trigger"
+	ActionComponent  = "action"
+)
+
+type Trigger interface {
 	// Init: must NOT block, start long running processes in a go routine
 	Init(stub Stub, config []byte) (err error)
 
-	// Receive: must block until a new message is received
-	Receive() (tag string, message map[string]interface{}, err error)
+	// Trigger: must block until a new message is received
+	Trigger() (tag string, message map[string]interface{}, err error)
 
 	// Ack is called by the adapter base after the message (with tag `tag`), which was initially received
 	// by this input endpoint, has been successfully passed through the actions in the pipeline, sent

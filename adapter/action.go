@@ -8,7 +8,7 @@ func StartAction(action Action) {
 	plugin.Serve(&plugin.ServeConfig{
 		HandshakeConfig: ActionHandshake,
 		Plugins: map[string]plugin.Plugin{
-			"action": &ActionPlugin{Impl: action},
+			ActionComponent: &ActionPlugin{Impl: action},
 		},
 
 		// A non-nil value here enables gRPC serving for this plugin...
