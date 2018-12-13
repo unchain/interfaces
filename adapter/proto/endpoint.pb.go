@@ -3,12 +3,13 @@
 
 package proto
 
+import proto "github.com/golang/protobuf/proto"
+import fmt "fmt"
+import math "math"
+
 import (
-	fmt "fmt"
-	proto "github.com/golang/protobuf/proto"
 	context "golang.org/x/net/context"
 	grpc "google.golang.org/grpc"
-	math "math"
 )
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -34,17 +35,16 @@ func (m *InitEndpointRequest) Reset()         { *m = InitEndpointRequest{} }
 func (m *InitEndpointRequest) String() string { return proto.CompactTextString(m) }
 func (*InitEndpointRequest) ProtoMessage()    {}
 func (*InitEndpointRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e90a83b3c7ac16f6, []int{0}
+	return fileDescriptor_endpoint_1dd379cb95dc47e3, []int{0}
 }
-
 func (m *InitEndpointRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_InitEndpointRequest.Unmarshal(m, b)
 }
 func (m *InitEndpointRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_InitEndpointRequest.Marshal(b, m, deterministic)
 }
-func (m *InitEndpointRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_InitEndpointRequest.Merge(m, src)
+func (dst *InitEndpointRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_InitEndpointRequest.Merge(dst, src)
 }
 func (m *InitEndpointRequest) XXX_Size() int {
 	return xxx_messageInfo_InitEndpointRequest.Size(m)
@@ -79,17 +79,16 @@ func (m *InitEndpointResponse) Reset()         { *m = InitEndpointResponse{} }
 func (m *InitEndpointResponse) String() string { return proto.CompactTextString(m) }
 func (*InitEndpointResponse) ProtoMessage()    {}
 func (*InitEndpointResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e90a83b3c7ac16f6, []int{1}
+	return fileDescriptor_endpoint_1dd379cb95dc47e3, []int{1}
 }
-
 func (m *InitEndpointResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_InitEndpointResponse.Unmarshal(m, b)
 }
 func (m *InitEndpointResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_InitEndpointResponse.Marshal(b, m, deterministic)
 }
-func (m *InitEndpointResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_InitEndpointResponse.Merge(m, src)
+func (dst *InitEndpointResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_InitEndpointResponse.Merge(dst, src)
 }
 func (m *InitEndpointResponse) XXX_Size() int {
 	return xxx_messageInfo_InitEndpointResponse.Size(m)
@@ -99,84 +98,6 @@ func (m *InitEndpointResponse) XXX_DiscardUnknown() {
 }
 
 var xxx_messageInfo_InitEndpointResponse proto.InternalMessageInfo
-
-type SendRequest struct {
-	Message              []byte   `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *SendRequest) Reset()         { *m = SendRequest{} }
-func (m *SendRequest) String() string { return proto.CompactTextString(m) }
-func (*SendRequest) ProtoMessage()    {}
-func (*SendRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e90a83b3c7ac16f6, []int{2}
-}
-
-func (m *SendRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_SendRequest.Unmarshal(m, b)
-}
-func (m *SendRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_SendRequest.Marshal(b, m, deterministic)
-}
-func (m *SendRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_SendRequest.Merge(m, src)
-}
-func (m *SendRequest) XXX_Size() int {
-	return xxx_messageInfo_SendRequest.Size(m)
-}
-func (m *SendRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_SendRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_SendRequest proto.InternalMessageInfo
-
-func (m *SendRequest) GetMessage() []byte {
-	if m != nil {
-		return m.Message
-	}
-	return nil
-}
-
-type SendResponse struct {
-	Response             []byte   `protobuf:"bytes,1,opt,name=response,proto3" json:"response,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *SendResponse) Reset()         { *m = SendResponse{} }
-func (m *SendResponse) String() string { return proto.CompactTextString(m) }
-func (*SendResponse) ProtoMessage()    {}
-func (*SendResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e90a83b3c7ac16f6, []int{3}
-}
-
-func (m *SendResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_SendResponse.Unmarshal(m, b)
-}
-func (m *SendResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_SendResponse.Marshal(b, m, deterministic)
-}
-func (m *SendResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_SendResponse.Merge(m, src)
-}
-func (m *SendResponse) XXX_Size() int {
-	return xxx_messageInfo_SendResponse.Size(m)
-}
-func (m *SendResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_SendResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_SendResponse proto.InternalMessageInfo
-
-func (m *SendResponse) GetResponse() []byte {
-	if m != nil {
-		return m.Response
-	}
-	return nil
-}
 
 type ReceiveRequest struct {
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -188,17 +109,16 @@ func (m *ReceiveRequest) Reset()         { *m = ReceiveRequest{} }
 func (m *ReceiveRequest) String() string { return proto.CompactTextString(m) }
 func (*ReceiveRequest) ProtoMessage()    {}
 func (*ReceiveRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e90a83b3c7ac16f6, []int{4}
+	return fileDescriptor_endpoint_1dd379cb95dc47e3, []int{2}
 }
-
 func (m *ReceiveRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ReceiveRequest.Unmarshal(m, b)
 }
 func (m *ReceiveRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_ReceiveRequest.Marshal(b, m, deterministic)
 }
-func (m *ReceiveRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ReceiveRequest.Merge(m, src)
+func (dst *ReceiveRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ReceiveRequest.Merge(dst, src)
 }
 func (m *ReceiveRequest) XXX_Size() int {
 	return xxx_messageInfo_ReceiveRequest.Size(m)
@@ -221,17 +141,16 @@ func (m *ReceiveResponse) Reset()         { *m = ReceiveResponse{} }
 func (m *ReceiveResponse) String() string { return proto.CompactTextString(m) }
 func (*ReceiveResponse) ProtoMessage()    {}
 func (*ReceiveResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e90a83b3c7ac16f6, []int{5}
+	return fileDescriptor_endpoint_1dd379cb95dc47e3, []int{3}
 }
-
 func (m *ReceiveResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_ReceiveResponse.Unmarshal(m, b)
 }
 func (m *ReceiveResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_ReceiveResponse.Marshal(b, m, deterministic)
 }
-func (m *ReceiveResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_ReceiveResponse.Merge(m, src)
+func (dst *ReceiveResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_ReceiveResponse.Merge(dst, src)
 }
 func (m *ReceiveResponse) XXX_Size() int {
 	return xxx_messageInfo_ReceiveResponse.Size(m)
@@ -268,17 +187,16 @@ func (m *AckRequest) Reset()         { *m = AckRequest{} }
 func (m *AckRequest) String() string { return proto.CompactTextString(m) }
 func (*AckRequest) ProtoMessage()    {}
 func (*AckRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e90a83b3c7ac16f6, []int{6}
+	return fileDescriptor_endpoint_1dd379cb95dc47e3, []int{4}
 }
-
 func (m *AckRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_AckRequest.Unmarshal(m, b)
 }
 func (m *AckRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_AckRequest.Marshal(b, m, deterministic)
 }
-func (m *AckRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_AckRequest.Merge(m, src)
+func (dst *AckRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_AckRequest.Merge(dst, src)
 }
 func (m *AckRequest) XXX_Size() int {
 	return xxx_messageInfo_AckRequest.Size(m)
@@ -313,17 +231,16 @@ func (m *AckResponse) Reset()         { *m = AckResponse{} }
 func (m *AckResponse) String() string { return proto.CompactTextString(m) }
 func (*AckResponse) ProtoMessage()    {}
 func (*AckResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e90a83b3c7ac16f6, []int{7}
+	return fileDescriptor_endpoint_1dd379cb95dc47e3, []int{5}
 }
-
 func (m *AckResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_AckResponse.Unmarshal(m, b)
 }
 func (m *AckResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_AckResponse.Marshal(b, m, deterministic)
 }
-func (m *AckResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_AckResponse.Merge(m, src)
+func (dst *AckResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_AckResponse.Merge(dst, src)
 }
 func (m *AckResponse) XXX_Size() int {
 	return xxx_messageInfo_AckResponse.Size(m)
@@ -346,17 +263,16 @@ func (m *NackRequest) Reset()         { *m = NackRequest{} }
 func (m *NackRequest) String() string { return proto.CompactTextString(m) }
 func (*NackRequest) ProtoMessage()    {}
 func (*NackRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e90a83b3c7ac16f6, []int{8}
+	return fileDescriptor_endpoint_1dd379cb95dc47e3, []int{6}
 }
-
 func (m *NackRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_NackRequest.Unmarshal(m, b)
 }
 func (m *NackRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_NackRequest.Marshal(b, m, deterministic)
 }
-func (m *NackRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_NackRequest.Merge(m, src)
+func (dst *NackRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_NackRequest.Merge(dst, src)
 }
 func (m *NackRequest) XXX_Size() int {
 	return xxx_messageInfo_NackRequest.Size(m)
@@ -391,17 +307,16 @@ func (m *NackResponse) Reset()         { *m = NackResponse{} }
 func (m *NackResponse) String() string { return proto.CompactTextString(m) }
 func (*NackResponse) ProtoMessage()    {}
 func (*NackResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e90a83b3c7ac16f6, []int{9}
+	return fileDescriptor_endpoint_1dd379cb95dc47e3, []int{7}
 }
-
 func (m *NackResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_NackResponse.Unmarshal(m, b)
 }
 func (m *NackResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_NackResponse.Marshal(b, m, deterministic)
 }
-func (m *NackResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_NackResponse.Merge(m, src)
+func (dst *NackResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_NackResponse.Merge(dst, src)
 }
 func (m *NackResponse) XXX_Size() int {
 	return xxx_messageInfo_NackResponse.Size(m)
@@ -422,17 +337,16 @@ func (m *CloseRequest) Reset()         { *m = CloseRequest{} }
 func (m *CloseRequest) String() string { return proto.CompactTextString(m) }
 func (*CloseRequest) ProtoMessage()    {}
 func (*CloseRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e90a83b3c7ac16f6, []int{10}
+	return fileDescriptor_endpoint_1dd379cb95dc47e3, []int{8}
 }
-
 func (m *CloseRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CloseRequest.Unmarshal(m, b)
 }
 func (m *CloseRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_CloseRequest.Marshal(b, m, deterministic)
 }
-func (m *CloseRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_CloseRequest.Merge(m, src)
+func (dst *CloseRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CloseRequest.Merge(dst, src)
 }
 func (m *CloseRequest) XXX_Size() int {
 	return xxx_messageInfo_CloseRequest.Size(m)
@@ -453,17 +367,16 @@ func (m *CloseResponse) Reset()         { *m = CloseResponse{} }
 func (m *CloseResponse) String() string { return proto.CompactTextString(m) }
 func (*CloseResponse) ProtoMessage()    {}
 func (*CloseResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_e90a83b3c7ac16f6, []int{11}
+	return fileDescriptor_endpoint_1dd379cb95dc47e3, []int{9}
 }
-
 func (m *CloseResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_CloseResponse.Unmarshal(m, b)
 }
 func (m *CloseResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	return xxx_messageInfo_CloseResponse.Marshal(b, m, deterministic)
 }
-func (m *CloseResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_CloseResponse.Merge(m, src)
+func (dst *CloseResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_CloseResponse.Merge(dst, src)
 }
 func (m *CloseResponse) XXX_Size() int {
 	return xxx_messageInfo_CloseResponse.Size(m)
@@ -477,8 +390,6 @@ var xxx_messageInfo_CloseResponse proto.InternalMessageInfo
 func init() {
 	proto.RegisterType((*InitEndpointRequest)(nil), "proto.InitEndpointRequest")
 	proto.RegisterType((*InitEndpointResponse)(nil), "proto.InitEndpointResponse")
-	proto.RegisterType((*SendRequest)(nil), "proto.SendRequest")
-	proto.RegisterType((*SendResponse)(nil), "proto.SendResponse")
 	proto.RegisterType((*ReceiveRequest)(nil), "proto.ReceiveRequest")
 	proto.RegisterType((*ReceiveResponse)(nil), "proto.ReceiveResponse")
 	proto.RegisterType((*AckRequest)(nil), "proto.AckRequest")
@@ -487,35 +398,6 @@ func init() {
 	proto.RegisterType((*NackResponse)(nil), "proto.NackResponse")
 	proto.RegisterType((*CloseRequest)(nil), "proto.CloseRequest")
 	proto.RegisterType((*CloseResponse)(nil), "proto.CloseResponse")
-}
-
-func init() { proto.RegisterFile("endpoint.proto", fileDescriptor_e90a83b3c7ac16f6) }
-
-var fileDescriptor_e90a83b3c7ac16f6 = []byte{
-	// 363 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x7c, 0x51, 0x4d, 0x4f, 0xc2, 0x40,
-	0x14, 0x0c, 0xe5, 0xfb, 0xb5, 0x14, 0x5c, 0x90, 0x90, 0x7a, 0x90, 0xec, 0x45, 0x62, 0x0c, 0x26,
-	0x18, 0x13, 0x63, 0x62, 0x0c, 0x31, 0x1e, 0xbc, 0x70, 0x58, 0x7e, 0x80, 0x81, 0xb2, 0x92, 0x06,
-	0xed, 0xe2, 0x6e, 0xe1, 0x3f, 0xfa, 0xaf, 0x4c, 0x77, 0x5f, 0xcb, 0x16, 0x89, 0x27, 0x3a, 0xf3,
-	0xde, 0xcc, 0x0e, 0xf3, 0xc0, 0xe7, 0xf1, 0x6a, 0x2b, 0xa2, 0x38, 0x19, 0x6f, 0xa5, 0x48, 0x04,
-	0xa9, 0xea, 0x1f, 0x3a, 0x83, 0xee, 0x5b, 0x1c, 0x25, 0xaf, 0x38, 0x64, 0xfc, 0x7b, 0xc7, 0x55,
-	0x42, 0x2e, 0xc1, 0x55, 0xc9, 0x6e, 0xf9, 0xae, 0xb8, 0xdc, 0x73, 0x39, 0x28, 0x0d, 0x4b, 0xa3,
-	0x16, 0x83, 0x94, 0x9a, 0x6b, 0x86, 0xf4, 0xa1, 0x16, 0x8a, 0xf8, 0x23, 0x5a, 0x0f, 0x9c, 0x61,
-	0x69, 0xe4, 0x31, 0x44, 0xb4, 0x0f, 0xbd, 0xa2, 0x9f, 0xda, 0x8a, 0x58, 0x71, 0x7a, 0x05, 0xee,
-	0x9c, 0xc7, 0xab, 0xcc, 0x7f, 0x00, 0xf5, 0x2f, 0xae, 0xd4, 0x62, 0xcd, 0xb5, 0xb7, 0xc7, 0x32,
-	0x48, 0xaf, 0xc1, 0x33, 0x8b, 0x46, 0x48, 0x02, 0x68, 0x48, 0xfc, 0xc6, 0xd5, 0x1c, 0xd3, 0x0e,
-	0xf8, 0x8c, 0x87, 0x3c, 0xda, 0x73, 0xf4, 0xa5, 0x4f, 0xd0, 0xce, 0x19, 0x34, 0xe8, 0x40, 0x39,
-	0x59, 0xac, 0xb5, 0xb6, 0xc9, 0xd2, 0x4f, 0xfb, 0x71, 0xa7, 0xf8, 0xf8, 0x23, 0xc0, 0x34, 0xdc,
-	0x64, 0x21, 0xff, 0x2a, 0xed, 0x30, 0xce, 0x51, 0x98, 0x16, 0xb8, 0x5a, 0x8b, 0xf0, 0x1e, 0xdc,
-	0xd9, 0xe2, 0x3f, 0xaf, 0x1e, 0x54, 0xb9, 0x94, 0x42, 0x6a, 0xa3, 0x26, 0x33, 0x80, 0xfa, 0xe0,
-	0x19, 0x19, 0xda, 0xf8, 0xe0, 0xbd, 0x7c, 0x0a, 0x95, 0xff, 0xc1, 0x36, 0xb4, 0x10, 0x9b, 0x85,
-	0xc9, 0x8f, 0x03, 0x8d, 0xac, 0x6d, 0xf2, 0x0c, 0x95, 0xb4, 0x7d, 0x12, 0x98, 0x23, 0x8f, 0x4f,
-	0x9c, 0x36, 0xb8, 0x38, 0x39, 0xc3, 0xb2, 0x6e, 0xa1, 0x92, 0xb6, 0x4f, 0x08, 0x2e, 0x59, 0x37,
-	0x0b, 0xba, 0x05, 0x0e, 0x05, 0x0f, 0x50, 0xc7, 0xc2, 0xc9, 0x39, 0xce, 0x8b, 0x27, 0x09, 0xfa,
-	0xc7, 0x34, 0x2a, 0x6f, 0xa0, 0x3c, 0x0d, 0x37, 0xe4, 0x0c, 0xc7, 0x87, 0xde, 0x03, 0x62, 0x53,
-	0x87, 0x60, 0x69, 0x2f, 0x79, 0x30, 0xab, 0xdb, 0x3c, 0x98, 0x5d, 0x1c, 0x99, 0x40, 0x55, 0x17,
-	0x45, 0xb2, 0xa9, 0x5d, 0x63, 0xd0, 0x2b, 0x92, 0x46, 0xb3, 0xac, 0x69, 0xf2, 0xee, 0x37, 0x00,
-	0x00, 0xff, 0xff, 0x1d, 0x80, 0xf7, 0x6d, 0x2c, 0x03, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -531,7 +413,6 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type EndpointClient interface {
 	Init(ctx context.Context, in *InitEndpointRequest, opts ...grpc.CallOption) (*InitEndpointResponse, error)
-	Send(ctx context.Context, in *SendRequest, opts ...grpc.CallOption) (*SendResponse, error)
 	Receive(ctx context.Context, in *ReceiveRequest, opts ...grpc.CallOption) (*ReceiveResponse, error)
 	Ack(ctx context.Context, in *AckRequest, opts ...grpc.CallOption) (*AckResponse, error)
 	Nack(ctx context.Context, in *NackRequest, opts ...grpc.CallOption) (*NackResponse, error)
@@ -549,15 +430,6 @@ func NewEndpointClient(cc *grpc.ClientConn) EndpointClient {
 func (c *endpointClient) Init(ctx context.Context, in *InitEndpointRequest, opts ...grpc.CallOption) (*InitEndpointResponse, error) {
 	out := new(InitEndpointResponse)
 	err := c.cc.Invoke(ctx, "/proto.Endpoint/Init", in, out, opts...)
-	if err != nil {
-		return nil, err
-	}
-	return out, nil
-}
-
-func (c *endpointClient) Send(ctx context.Context, in *SendRequest, opts ...grpc.CallOption) (*SendResponse, error) {
-	out := new(SendResponse)
-	err := c.cc.Invoke(ctx, "/proto.Endpoint/Send", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -603,7 +475,6 @@ func (c *endpointClient) Close(ctx context.Context, in *CloseRequest, opts ...gr
 // EndpointServer is the server API for Endpoint service.
 type EndpointServer interface {
 	Init(context.Context, *InitEndpointRequest) (*InitEndpointResponse, error)
-	Send(context.Context, *SendRequest) (*SendResponse, error)
 	Receive(context.Context, *ReceiveRequest) (*ReceiveResponse, error)
 	Ack(context.Context, *AckRequest) (*AckResponse, error)
 	Nack(context.Context, *NackRequest) (*NackResponse, error)
@@ -628,24 +499,6 @@ func _Endpoint_Init_Handler(srv interface{}, ctx context.Context, dec func(inter
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(EndpointServer).Init(ctx, req.(*InitEndpointRequest))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
-func _Endpoint_Send_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(SendRequest)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(EndpointServer).Send(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: "/proto.Endpoint/Send",
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EndpointServer).Send(ctx, req.(*SendRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -731,10 +584,6 @@ var _Endpoint_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Endpoint_Init_Handler,
 		},
 		{
-			MethodName: "Send",
-			Handler:    _Endpoint_Send_Handler,
-		},
-		{
 			MethodName: "Receive",
 			Handler:    _Endpoint_Receive_Handler,
 		},
@@ -753,4 +602,31 @@ var _Endpoint_serviceDesc = grpc.ServiceDesc{
 	},
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "endpoint.proto",
+}
+
+func init() { proto.RegisterFile("endpoint.proto", fileDescriptor_endpoint_1dd379cb95dc47e3) }
+
+var fileDescriptor_endpoint_1dd379cb95dc47e3 = []byte{
+	// 327 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x7c, 0x51, 0x4d, 0x4f, 0xc2, 0x40,
+	0x14, 0x0c, 0xdf, 0x30, 0x40, 0xc1, 0x05, 0x09, 0x59, 0x0f, 0x92, 0x3d, 0x71, 0x30, 0x98, 0x60,
+	0x4c, 0x8c, 0x89, 0x31, 0xc4, 0x78, 0xf0, 0xc2, 0xa1, 0xfe, 0x00, 0x03, 0xf5, 0x49, 0x1a, 0xb4,
+	0x8b, 0xbb, 0x85, 0xdf, 0xe2, 0xcf, 0x35, 0xdd, 0xbe, 0x22, 0x55, 0xe2, 0x09, 0x66, 0xe6, 0xcd,
+	0xbc, 0xbe, 0x59, 0x78, 0x14, 0xbd, 0x6e, 0x74, 0x18, 0xc5, 0x93, 0x8d, 0xd1, 0xb1, 0x16, 0x15,
+	0xf7, 0xa3, 0xe6, 0xe8, 0x3d, 0x45, 0x61, 0xfc, 0xc8, 0xa2, 0x4f, 0x9f, 0x5b, 0xb2, 0xb1, 0x38,
+	0x47, 0xd3, 0xc6, 0xdb, 0xe5, 0x8b, 0x25, 0xb3, 0x23, 0x33, 0x2c, 0x8c, 0x0a, 0xe3, 0xb6, 0x8f,
+	0x84, 0x7a, 0x76, 0x8c, 0x18, 0xa0, 0x1a, 0xe8, 0xe8, 0x2d, 0x5c, 0x0d, 0x8b, 0xa3, 0xc2, 0xb8,
+	0xe5, 0x33, 0x52, 0x03, 0xf4, 0xf3, 0x79, 0x76, 0xa3, 0x23, 0x4b, 0xaa, 0x0b, 0xcf, 0xa7, 0x80,
+	0xc2, 0x1d, 0xf1, 0x0a, 0x75, 0x87, 0xce, 0x9e, 0x49, 0x87, 0x44, 0x17, 0xa5, 0x78, 0xb1, 0x72,
+	0xdb, 0x1a, 0x7e, 0xf2, 0x57, 0x0c, 0x51, 0xfb, 0x20, 0x6b, 0x17, 0x2b, 0xe2, 0x3d, 0x19, 0x54,
+	0xb7, 0xc0, 0x2c, 0x58, 0x67, 0xdf, 0xfb, 0xd7, 0x29, 0x51, 0x37, 0x9c, 0xcb, 0xd6, 0x3d, 0x56,
+	0x6d, 0x34, 0x9d, 0x97, 0xe1, 0x35, 0x9a, 0xf3, 0xc5, 0x7f, 0x59, 0x7d, 0x54, 0xc8, 0x18, 0x6d,
+	0x5c, 0x50, 0xc3, 0x4f, 0x81, 0xf2, 0xd0, 0x4a, 0x6d, 0x1c, 0xe3, 0xa1, 0xf5, 0xf0, 0xae, 0xed,
+	0xfe, 0xc0, 0x0e, 0xda, 0x8c, 0xd3, 0x81, 0xe9, 0x57, 0x11, 0xf5, 0xac, 0x18, 0x71, 0x8f, 0x72,
+	0x52, 0x94, 0x90, 0xe9, 0x7b, 0x4c, 0x8e, 0xbc, 0x82, 0x3c, 0x3b, 0xaa, 0x71, 0x59, 0x37, 0xa8,
+	0x71, 0x7f, 0xe2, 0x94, 0xe7, 0xf2, 0x0d, 0xcb, 0xc1, 0x6f, 0x9a, 0x9d, 0x17, 0x28, 0xcd, 0x82,
+	0xb5, 0x38, 0x61, 0xf9, 0xa7, 0x46, 0x29, 0x0e, 0x29, 0x9e, 0xbe, 0x44, 0x39, 0x39, 0x53, 0x64,
+	0xda, 0x41, 0x55, 0xb2, 0x97, 0xe3, 0xd8, 0x30, 0x45, 0xc5, 0xdd, 0x2d, 0x32, 0xf5, 0xb0, 0x15,
+	0xd9, 0xcf, 0x93, 0xa9, 0x67, 0x59, 0x75, 0xe4, 0xd5, 0x77, 0x00, 0x00, 0x00, 0xff, 0xff, 0x0a,
+	0x3d, 0xf5, 0x7e, 0xa6, 0x02, 0x00, 0x00,
 }

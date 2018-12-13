@@ -1,6 +1,7 @@
 package adapter
 
 import (
+	"encoding/json"
 	"errors"
 
 	"github.com/hashicorp/go-plugin"
@@ -25,18 +26,6 @@ func (m *GRPCEndpointClient) Init(stub Stub, cfg []byte) error {
 	})
 
 	return err
-}
-
-func (m *GRPCEndpointClient) Send(message []byte) ([]byte, error) {
-	r, err := m.client.Send(context.Background(), &proto.SendRequest{
-		Message: message,
-	})
-
-	if err != nil {
-		return nil, err
-	}
-
-	return r.Response, nil
 }
 
 func (m *GRPCEndpointClient) Receive() (string, []byte, error) {
@@ -93,18 +82,6 @@ func (m *GRPCEndpointServer) Init(ctx context.Context, req *proto.InitEndpointRe
 	return &proto.InitEndpointResponse{}, m.Impl.Init(stub, req.Config)
 }
 
-func (m *GRPCEndpointServer) Send(ctx context.Context, req *proto.SendRequest) (*proto.SendResponse, error) {
-	r, err := m.Impl.Send(req.Message)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return &proto.SendResponse{
-		Response: r,
-	}, nil
-}
-
 func (m *GRPCEndpointServer) Receive(ctx context.Context, req *proto.ReceiveRequest) (*proto.ReceiveResponse, error) {
 	tag, r, err := m.Impl.Receive()
 
@@ -112,14 +89,29 @@ func (m *GRPCEndpointServer) Receive(ctx context.Context, req *proto.ReceiveRequ
 		return nil, err
 	}
 
+	rBytes, err := json.Marshal(r)
+
+	if err != nil {
+		return nil, err
+	}
+
 	return &proto.ReceiveResponse{
 		Tag:     tag,
-		Message: r,
+		Message: rBytes,
 	}, nil
 }
 
 func (m *GRPCEndpointServer) Ack(ctx context.Context, req *proto.AckRequest) (*proto.AckResponse, error) {
-	return &proto.AckResponse{}, m.Impl.Ack(req.Tag, req.Response)
+	response := make(map[string]map[string]interface{})
+	err := json.Unmarshal(req.Response, response)
+
+	if err != nil {
+		return nil, err
+	}
+	if err != nil {
+		return nil, err
+	}
+	return &proto.AckResponse{}, m.Impl.Ack(req.Tag, response)
 }
 
 func (m *GRPCEndpointServer) Nack(ctx context.Context, req *proto.NackRequest) (*proto.NackResponse, error) {

@@ -11,14 +11,6 @@ message InitEndpointRequest {
 
 message InitEndpointResponse {}
 
-message SendRequest {
-    bytes message = 1;
-}
-
-message SendResponse {
-    bytes response = 1;
-}
-
 message ReceiveRequest {
 }
 
@@ -48,7 +40,6 @@ message CloseResponse {}
 
 service Endpoint {
     rpc Init(InitEndpointRequest) returns (InitEndpointResponse);
-    rpc Send(SendRequest) returns (SendResponse);
     rpc Receive(ReceiveRequest) returns (ReceiveResponse);
     rpc Ack(AckRequest) returns (AckResponse);
     rpc Nack(NackRequest) returns (NackResponse);

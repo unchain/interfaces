@@ -1,6 +1,8 @@
 package adapter
 
 import (
+	"encoding/json"
+
 	"github.com/hashicorp/go-plugin"
 	"github.com/unchainio/interfaces/adapter/proto"
 	"golang.org/x/net/context"
@@ -59,9 +61,23 @@ func (m *GRPCActionServer) Init(ctx context.Context, req *proto.InitActionReques
 }
 
 func (m *GRPCActionServer) Invoke(ctx context.Context, req *proto.InvokeRequest) (*proto.InvokeResponse, error) {
-	omsg, err := m.Impl.Invoke(req.Message)
+	message := make(map[string]map[string]interface{})
+
+	err := json.Unmarshal(req.Message, message)
+
+	if err != nil {
+		return nil, err
+	}
+
+	omsg, err := m.Impl.Invoke(message)
+
+	omsgBytes, err := json.Marshal(omsg)
+
+	if err != nil {
+		return nil, err
+	}
 
 	return &proto.InvokeResponse{
-		Message: omsg,
+		Message: omsgBytes,
 	}, err
 }
