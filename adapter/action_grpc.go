@@ -61,7 +61,7 @@ func (m *GRPCActionServer) Init(ctx context.Context, req *proto.InitActionReques
 }
 
 func (m *GRPCActionServer) Invoke(ctx context.Context, req *proto.InvokeRequest) (*proto.InvokeResponse, error) {
-	message := make(map[string]map[string]interface{})
+	message := make(map[string]interface{})
 
 	err := json.Unmarshal(req.Message, message)
 

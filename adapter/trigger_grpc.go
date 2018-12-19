@@ -102,7 +102,7 @@ func (m *GRPCTriggerServer) Trigger(ctx context.Context, req *proto.TriggerReque
 }
 
 func (m *GRPCTriggerServer) Ack(ctx context.Context, req *proto.AckRequest) (*proto.AckResponse, error) {
-	response := make(map[string]map[string]interface{})
+	response := make(map[string]interface{})
 	err := json.Unmarshal(req.Response, response)
 
 	if err != nil {
