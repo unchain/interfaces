@@ -20,7 +20,7 @@ type Trigger interface {
 	// by this input endpoint, has been successfully passed through the actions in the pipeline, sent
 	// over the output endpoint, and a response has been returned from the output endpoint and passed
 	// through the actions in the response pipeline.
-	Ack(tag string, response map[string]map[string]interface{}) error
+	Ack(tag string, response map[string]interface{}) error
 
 	// Nack is called by the adapter base if anything goes wrong while processing the message with tag `tag`
 	Nack(tag string, err error) error
@@ -30,7 +30,7 @@ type Trigger interface {
 
 type Action interface {
 	Init(stub Stub, config []byte) (err error)
-	Invoke(inputMessage map[string]map[string]interface{}) (outputMessage map[string]interface{}, err error)
+	Invoke(input map[string]interface{}) (output map[string]interface{}, err error)
 }
 
 type Stub interface {
