@@ -19,19 +19,13 @@ message TriggerResponse {
     bytes message = 2;
 }
 
-message AckRequest {
+message RespondRequest {
     string tag = 1;
     bytes response = 2;
+    string error = 3;
 }
 
-message AckResponse {}
-
-message NackRequest {
-    string tag = 1;
-    string error = 2;
-}
-
-message NackResponse {}
+message RespondResponse {}
 
 message CloseRequest {
 }
@@ -39,9 +33,8 @@ message CloseRequest {
 message CloseResponse {}
 
 service Trigger {
-    rpc Init(InitTriggerRequest) returns (InitTriggerResponse);
-    rpc Trigger(TriggerRequest) returns (TriggerResponse);
-    rpc Ack(AckRequest) returns (AckResponse);
-    rpc Nack(NackRequest) returns (NackResponse);
-    rpc Close(CloseRequest) returns (CloseResponse);
+    rpc Init (InitTriggerRequest) returns (InitTriggerResponse);
+    rpc Trigger (TriggerRequest) returns (TriggerResponse);
+    rpc Respond (RespondRequest) returns (RespondResponse);
+    rpc Close (CloseRequest) returns (CloseResponse);
 }
